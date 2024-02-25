@@ -7,21 +7,47 @@
 
 import SwiftUI
 
-struct SwiftUIView: View {
+struct ScoreView: View {
+    
+    @Binding var isQuizPresented: Bool
+    
     var score: Int
     var totalScore: Int
     
     var body: some View {
         ZStack {
-            Color.yellow
             VStack {
-                Text("Your score was:")
-                Text("\(score)/\(totalScore)")
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        isQuizPresented.toggle()
+                    }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 20))
+                            .foregroundColor(.white)
+                    }
+                    .padding()
+                }
+                
+                Spacer()
+
+                VStack{
+                    Text("Your score:")
+                        .font(.system(size: 25))
+                        .padding()
+                    Text("\(score)/\(totalScore)")
+                        .font(.system(size: 40))
+                        .fontWeight(.bold)
+                        .padding()
+                }
+                .padding()
+                
+                Spacer()
             }
         }
     }
 }
 
 #Preview {
-    SwiftUIView(score: 15, totalScore: 20)
+    ScoreView(isQuizPresented: .constant(false), score: 15, totalScore: 20)
 }

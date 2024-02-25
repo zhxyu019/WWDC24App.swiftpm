@@ -86,9 +86,15 @@ struct MLView: View {
                     }
                 } label: {
                     ZStack(alignment: .center){
+                        
                         RoundedRectangle(cornerRadius: 20)
                             .fill(.ultraThickMaterial)
                             .frame(width: 300)
+                        
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.white, lineWidth: 0.5)
+                            .frame(width: 300)
+                        
                         Text("Predict")
                             .foregroundColor(.white)
                             .font(.system(size: 30))
