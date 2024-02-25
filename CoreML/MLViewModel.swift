@@ -5,9 +5,9 @@
 //  Created by Ma Zhiyu on 23/2/24.
 //
 
-import Foundation
-import NaturalLanguage
+
 import CoreML
+
 
 /// Model Prediction Input Type
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -73,10 +73,8 @@ class Spam_Identifier_1 {
 
     /// URL of model assuming it was installed in the same bundle as this class
     class var urlOfModelInThisBundle : URL {
-        let resPath = Bundle(for: self).url(forResource: "Spam_Identifier_1", withExtension: "mlmodel")!
-        return try! MLModel.compileModel(at: resPath)
-//        let bundle = Bundle(for: self)
-//        return bundle.url(forResource: "Spam Identifier 1", withExtension:"mlmodelc")!
+        let bundle = Bundle(for: self)
+        return bundle.url(forResource: "Spam Identifier 1", withExtension:"mlmodelc")!
     }
 
     /**
