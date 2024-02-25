@@ -80,7 +80,7 @@ struct HomeView: View {
                 QuizView(isPresented: $isQuizViewPresented, isQuizPresented: $isQuizViewPresented)
             }
             .fullScreenCover(isPresented: $isReportViewPresented) {
-                ReportView(isPresented: $isReportViewPresented)
+                ReportView(isPresented: $isReportViewPresented, isSubmissionPresented: $isReportViewPresented)
             }
             .padding()
             

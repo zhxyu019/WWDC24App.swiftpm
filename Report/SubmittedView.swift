@@ -7,12 +7,40 @@
 
 import SwiftUI
 
-struct SwiftUIView: View {
+struct SubmittedView: View {
+    
+    @Binding var isSubmittedPresented: Bool
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            HStack {
+                Spacer()
+                Button(action: {
+                    isSubmittedPresented.toggle()
+                }) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 20))
+                        .foregroundColor(.white)
+                }
+                .padding()
+            }
+            
+            Spacer()
+            
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundColor(.green)
+                .font(.system(size: 60))
+            
+            Text("Report Submitted!")
+                .font(.system(size: 40))
+                .fontWeight(.bold)
+                .padding()
+            
+            Spacer()
+        }
     }
 }
 
 #Preview {
-    SwiftUIView()
+    SubmittedView(isSubmittedPresented: .constant(false))
 }

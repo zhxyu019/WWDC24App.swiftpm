@@ -27,7 +27,7 @@ struct AboutView: View {
                 Spacer()
                 
             }
-            .padding(.top, 20)
+            .padding(.top, 50)
             
             VStack(alignment: .leading, spacing: 20) {
                 HStack {

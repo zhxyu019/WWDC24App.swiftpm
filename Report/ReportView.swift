@@ -10,6 +10,9 @@ import SwiftUI
 struct ReportView: View {
     
     @Binding var isPresented: Bool
+    @Binding var isSubmissionPresented: Bool
+    
+    @State private var isSheetPresented = false
     
     @State private var senderEmail = ""
     @State private var messageContent = ""
@@ -19,7 +22,7 @@ struct ReportView: View {
     @State private var additionalDetails = ""
     
     let spamTypes = [SpamType.phishing, SpamType.scam, SpamType.advertisement, SpamType.other]
-    let frequencies = [Frequency.daily, Frequency.weekly, Frequency.monthly, Frequency.other]
+    let frequencies = [Frequency.hourly, Frequency.daily, Frequency.weekly, Frequency.monthly, Frequency.other]
     
     var body: some View {
         ScrollView{
@@ -58,7 +61,7 @@ struct ReportView: View {
 
                     TextField("Sender Email", text: $senderEmail)
                         .padding()
-                        .font(.system(size: 30))
+                        .font(.system(size: 25))
 
                 }
                 
@@ -66,9 +69,9 @@ struct ReportView: View {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(.thickMaterial)
 
-                    TextField("Sender Email", text: $senderNumber)
+                    TextField("Sender Phone Number", text: $senderNumber)
                         .padding()
-                        .font(.system(size: 30))
+                        .font(.system(size: 25))
 
                 }
                 
@@ -78,39 +81,47 @@ struct ReportView: View {
 
                     TextField("Message", text: $messageContent)
                         .padding()
-                        .font(.system(size: 30))
+                        .font(.system(size: 25))
 
                 }
                 
                 HStack{
-                    
-                    HStack{
-                        Text("Spam Type")
-                            .font(.system(size: 25))
-
-                        Picker("Spam Type", selection: $selectedSpamType) {
-                            ForEach(spamTypes, id: \.self) { type in
-                                Text(type.rawValue).tag(type)
-                            }
-                        }
-                        .pickerStyle(.menu)
-                    }
-                    
-                    Spacer()
-                    
-                    HStack{
-                        Text("Frequency")
-                            .font(.system(size: 25))
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(.thinMaterial)
                         
-                        Picker("Frequency", selection: $selectedFrequency) {
-                            ForEach(frequencies, id: \.self) { frequency in
-                                Text(frequency.rawValue).tag(frequency)
+                        VStack{
+                            Text("Spam Type")
+                                .font(.system(size: 25))
+                                .padding()
+
+                            Picker("Spam Type", selection: $selectedSpamType) {
+                                ForEach(spamTypes, id: \.self) { type in
+                                    Text(type.rawValue).tag(type)
+                                }
                             }
+                            .pickerStyle(.wheel)
                         }
-                        .pickerStyle(.menu)
                     }
+                    .padding(.horizontal)
                     
-                    Spacer()
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(.thinMaterial)
+                        
+                        VStack{
+                            Text("Frequency")
+                                .font(.system(size: 25))
+                                .padding()
+                            
+                            Picker("Frequency", selection: $selectedFrequency) {
+                                ForEach(frequencies, id: \.self) { frequency in
+                                    Text(frequency.rawValue).tag(frequency)
+                                }
+                            }
+                            .pickerStyle(.wheel)
+                        }
+                    }
                 }
                 
                 ZStack {
@@ -119,11 +130,36 @@ struct ReportView: View {
 
                     TextField("Additional Details", text: $additionalDetails)
                         .padding()
-                        .font(.system(size: 30))
-
+                        .font(.system(size: 25))
+                        .lineLimit(nil)
+                        .frame(minHeight: 100)
                 }
+                
+                Button {
+                    isSheetPresented = true
+                } label: {
+                    ZStack(alignment: .center){
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(.ultraThickMaterial)
+                            .frame(width: 300)
+                        
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.white, lineWidth: 0.5)
+                            .frame(width: 300)
+                        
+                        Text("Submit")
+                            .foregroundColor(.white)
+                            .font(.system(size: 30))
+                            .padding(10)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+
+            } // v stack ends here
+            .sheet(isPresented: $isSheetPresented) {
+                SubmittedView(isSubmittedPresented: $isSheetPresented)
             }
-        }
+        } // scroll view ends here
         .padding(50)
     }
 }
@@ -138,6 +174,7 @@ enum SpamType: String, CaseIterable {
 }
 
 enum Frequency: String, CaseIterable {
+    case hourly = "Hourly"
     case daily = "Daily"
     case weekly = "Weekly"
     case monthly = "Monthly"
@@ -145,5 +182,5 @@ enum Frequency: String, CaseIterable {
 }
 
 #Preview {
-    ReportView(isPresented: .constant(false))
+    ReportView(isPresented: .constant(false), isSubmissionPresented: .constant(false))
 }
